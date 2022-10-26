@@ -1,0 +1,12 @@
+mlflow
+fire
+dvc
+opencv-python
+torch
+ipython
+pillow
+torchvision
+matplotlib
+seaborn
+tensorboard
+thop

@@ -1,0 +1,6 @@
+schema: '2.0'
+stages:
+  train_yolov5:
+    cmd: python ..//src/yolov5/train.py --epochs 5 --data ../data/data.yaml --batch-size
+      8 --img 640 --weights '' --project ../models/trained/yolov5 --cfg ..//src/yolov5/models/yolov5s.yaml
+      --optimizer Adam

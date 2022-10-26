@@ -1,0 +1,35 @@
+vars:
+  - root_path: ../
+  - epochs: 2
+  - yaml_path: ../data/data.yaml
+  - batch_size: 8
+  - hyp_path: ./hyp.yaml
+  - image_size: 640
+  - weights: ''
+  - train_model_path: ../models/trained/yolov5
+  - model_name: yolov5s
+
+
+stages:
+  train_yolov5:
+    cmd: >-
+      python ${root_path}/src/yolov5/train.py
+      --epochs ${epochs}
+      --data ${yaml_path}
+      --batch-size ${batch_size}
+      --img ${image_size}
+      --weights ''
+      --project ${train_model_path}
+      --cfg ${root_path}/src/yolov5/models/${model_name}.yaml
+      --optimizer Adam
+    outs:
+      - ${train_model_path}
+
+  export_mlflow:
+    cmd: >-
+      python ${root_path}/main.py track_mlflow
+      --yaml_path ./dvc.yaml
+      --model_path ${train_model_path}
+      --result_path ${train_model_path}/exp/results.csv
+  
+  
