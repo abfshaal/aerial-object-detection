@@ -1,6 +1,11 @@
 schema: '2.0'
 stages:
   train_yolov5:
-    cmd: python ..//src/yolov5/train.py --epochs 5 --data ../data/data.yaml --batch-size
+    cmd: python ..//src/yolov5/train.py --epochs 2 --data ../data/data.yaml --batch-size
       8 --img 640 --weights '' --project ../models/trained/yolov5 --cfg ..//src/yolov5/models/yolov5s.yaml
       --optimizer Adam
+    outs:
+    - path: ../models/trained/yolov5
+      md5: a34c640a527d5defc0238179ccf64728.dir
+      size: 35883067
+      nfiles: 23

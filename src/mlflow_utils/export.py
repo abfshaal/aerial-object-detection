@@ -23,7 +23,10 @@ def log_params(yaml_path):
 def log_metrics(df):
   df.columns = [val.lstrip() for val in df.columns]
   for index,row in df.iterrows():
-    mlflow.log_metrics(**row.to_dict(),step=index)
+    try:
+      mlflow.log_metrics(row.to_dict(),step=index)
+    except:
+      continue
 
 def log_model(model_path:str):
   pass
