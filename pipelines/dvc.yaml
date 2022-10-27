@@ -1,6 +1,6 @@
 vars:
   - root_path: ../
-  - epochs: 2
+  - epochs: 20
   - yaml_path: ../data/data.yaml
   - batch_size: 8
   - hyp_path: ./hyp.yaml
@@ -28,9 +28,9 @@ stages:
   export_mlflow:
     cmd: >-
       python ${root_path}/main.py track_mlflow
+      --result_path=${train_model_path}
+      --model_path=${train_model_path}/exp/weights/best.pt
       --yaml_path=./dvc.yaml
-      --model_path=${train_model_path}
-      --result_path=${train_model_path}/exp/results.csv
 
     deps:
       - ${root_path}/src/mlflow_utils/export.py

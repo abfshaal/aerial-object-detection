@@ -1,6 +1,7 @@
 import pandas as pd 
 from yaml import safe_load
 
+import torch
 import mlflow
 import fire
 
@@ -23,20 +24,31 @@ def log_params(yaml_path):
 def log_metrics(df):
   df.columns = [val.lstrip() for val in df.columns]
   for index,row in df.iterrows():
-    try:
-      mlflow.log_metrics(row.to_dict(),step=index)
-    except:
-      continue
+    dict_row = row.to_dict()
+    for k,v in dict_row.items():
+      mlflow.log_metric(k.replace(':',' '),v,step=index)
+    
 
 def log_model(model_path:str):
-  pass
+  print(model_path, '======================')
+  model = torch.hub.load('ultralytics/yolov5', 'custom', path=model_path, force_reload=True)
+  mlflow.pytorch.log_model(
+    model,'model'
+  )
+
+def log_artifacts(result_path:str):
+  mlflow.log_artifact(f'{result_path}/exp/F1_curve.png')
+  mlflow.log_artifact(f'{result_path}/exp/PR_curve.png')
+  mlflow.log_artifact(f'{result_path}/exp/P_curve.png')
+  mlflow.log_artifact(f'{result_path}/exp/R_curve.png')
 
 def track_mlflow(result_path:str, model_path:str, yaml_path:str):
   mlflow.set_experiment('aerial_detection')
   with mlflow.start_run():
-    df = read_model_result(result_path)
+    df = read_model_result(f'{result_path}/exp/results.csv')
     log_params(yaml_path)
     log_metrics(df)
+    log_artifacts(result_path)
     log_model(model_path)
 
 

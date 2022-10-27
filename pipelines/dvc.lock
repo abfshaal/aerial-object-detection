@@ -6,6 +6,13 @@ stages:
       --optimizer Adam
     outs:
     - path: ../models/trained/yolov5
-      md5: a34c640a527d5defc0238179ccf64728.dir
-      size: 35883067
+      md5: 3f14a4ab5b75db719cac65b9beb19916.dir
+      size: 36287564
       nfiles: 23
+  export_mlflow:
+    cmd: python ..//main.py track_mlflow --result_path=../models/trained/yolov5 --model_path=../models/trained/yolov5/exp/weights/best.pt
+      --yaml_path=./dvc.yaml
+    deps:
+    - path: ..//src/mlflow_utils/export.py
+      md5: 507f754296baf189faf987c37b2f81a6
+      size: 1501
